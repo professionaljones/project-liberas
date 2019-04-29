@@ -119,8 +119,20 @@
 			]
 		},
 		{
-			"Name": "HTML5Networking",
+			"Name": "LocationServicesBPLibrary",
 			"Enabled": false
+		},
+		{
+			"Name": "OnlineFramework",
+			"Enabled": true
+		},
+		{
+			"Name": "ReplicationGraph",
+			"Enabled": true
+		},
+		{
+			"Name": "HTTPChunkInstaller",
+			"Enabled": true
 		}
 	],
 	"TargetPlatforms": [
