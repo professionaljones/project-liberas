@@ -123,3 +123,4 @@ W:\UnrealProjects\BrawlBots\Content\NoesisGUI\obj\Debug\ShooterGame-blend.csproj
 W:\UnrealProjects\BrawlBots\Content\NoesisGUI\obj\Debug\ShooterGame.exe
 W:\UnrealProjects\BrawlBots\Content\NoesisGUI\obj\Debug\ShooterGame.pdb
 W:\UnrealProjects\BrawlBots\Content\NoesisGUI\obj\Debug\ShooterGame-blend.csprojAssemblyReference.cache
+W:\UnrealProjects\BrawlBots\Content\NoesisGUI\obj\Debug\ShooterGame_Content.g.cs

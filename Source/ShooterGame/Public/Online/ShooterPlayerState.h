@@ -24,6 +24,15 @@ class AShooterPlayerState : public APlayerState
 	virtual void UnregisterPlayerWithSession() override;
 
 	// End APlayerState interface
+	
+	UPROPERTY()
+		bool bPlayerHasFlag = false;
+
+	/*UFUNCTION(Reliable, Client)
+		void InformAboutFlag(class AShooterPlayerState* FlagCapturer);
+
+	UFUNCTION(Reliable, NetMulticast)
+		void BrodcastFlag(class AShooterPlayerState* FlagCapturer);*/
 
 	/**
 	 * Set new team and update pawn. Also updates player character team colors.

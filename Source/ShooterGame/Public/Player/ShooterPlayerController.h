@@ -78,6 +78,10 @@ public:
 
 	/** */
 	void OnHitTaken(float DamageTaken, struct FDamageEvent const& DamageEvent, class APawn* PawnInstigator);
+	
+	void OnFlagCapture();
+
+	void OnFlagDrop();
 
 	void OnEnemyHit();
 

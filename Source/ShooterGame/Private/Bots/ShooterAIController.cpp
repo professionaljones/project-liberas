@@ -228,6 +228,7 @@ void AShooterAIController::SetEnemy(class APawn* InPawn)
 	if (BlackboardComp)
 	{
 		BlackboardComp->SetValue<UBlackboardKeyType_Object>(EnemyKeyID, InPawn);
+		//BlackboardComp->SetValue<UBlackboardKeyType_Bool>(LOSTrace(InPawn,true), true);
 		SetFocus(InPawn);
 	}
 }

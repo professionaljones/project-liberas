@@ -154,6 +154,11 @@
   <ItemGroup>
     <Resource Include="BB_MainMenu_2K.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="MenuAccept_Stereo.WAV" />
+    <Content Include="MenuCursor02_Stereo.WAV" />
+    <Content Include="MenuStart_Stereo.WAV" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="packages\Noesis.GUI.2.2.3\build\Mono\Noesis.GUI.targets" Condition="Exists('packages\Noesis.GUI.2.2.3\build\Mono\Noesis.GUI.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

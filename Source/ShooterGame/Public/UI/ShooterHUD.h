@@ -85,6 +85,10 @@ public:
 	/** Notifies we have hit the enemy. */
 	void NotifyEnemyHit();
 
+	void NotifyFlagCapture();
+
+	void NotifyFlagLoss();
+
 	/** 
 	 * Set state of current match.
 	 *

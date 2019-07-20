@@ -302,10 +302,34 @@
                                 <RowDefinition/>
                                 <RowDefinition/>
                             </Grid.RowDefinitions>
-                            <Button x:Name="HostButton" Grid.Row="0" Content="HOST" Style="{StaticResource Style.MenuButton}"/>
-                            <Button x:Name="JoinButton" Grid.Row="1" Content="JOIN" Style="{StaticResource Style.MenuButton}"/>
-                            <Button x:Name="OptionsButton" Grid.Row="2" Content="OPTIONS" Style="{StaticResource Style.MenuButton}"/>
-                            <Button x:Name="QuitButton" Grid.Row="3" Content="QUIT" Style="{StaticResource Style.MenuButton}" Command="{Binding Quit}"/>
+                            <Button x:Name="HostButton" Grid.Row="0" Content="HOST" Style="{StaticResource Style.MenuButton}">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="GotFocus">
+                                        <ei:PlaySoundAction Source="MenuCursor02_Stereo.WAV"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </Button>
+                            <Button x:Name="JoinButton" Grid.Row="1" Content="JOIN" Style="{StaticResource Style.MenuButton}">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="GotFocus">
+                                        <ei:PlaySoundAction Source="MenuCursor02_Stereo.WAV"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </Button>
+                            <Button x:Name="OptionsButton" Grid.Row="2" Content="OPTIONS" Style="{StaticResource Style.MenuButton}">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="GotFocus">
+                                        <ei:PlaySoundAction Source="MenuCursor02_Stereo.WAV"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </Button>
+                            <Button x:Name="QuitButton" Grid.Row="3" Content="QUIT" Style="{StaticResource Style.MenuButton}" Command="{Binding Quit}">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="GotFocus">
+                                        <ei:PlaySoundAction Source="MenuCursor02_Stereo.WAV"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </Button>
                         </Grid>
                     </ContentControl>
                 </Viewbox>
@@ -322,9 +346,27 @@
                                 <ComboBox Tag="MAP" ItemsSource="{Binding MapList}" SelectedValue="{Binding SelectedMap}" SelectedIndex="0"/>
                                 <ComboBox Tag="BOTS" ItemsSource="{Binding BotCountList}" SelectedValue="{Binding NumBots}" SelectedIndex="1"/>
                                 <CheckBox Content="RECORD DEMO" IsChecked="{Binding IsRecordingDemo}"/>
-                                <Button x:Name="HostFFAButton" Content="FREE FOR ALL" Command="{Binding HostFFA}" Margin="0,12,0,2"/>
-                                <Button x:Name="HostTDMButton" Content="TEAM DEATHMATCH" Command="{Binding HostTDM}" Margin="0,6"/>
-                                <Button x:Name="HostCTFButton" Content="CAPTURE THE FLAG" Command="{Binding HostTDM}" Margin="0"/>
+                                <Button x:Name="HostFFAButton" Content="FREE FOR ALL" Command="{Binding HostFFA}" Margin="0,12,0,2">
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="Click">
+                                            <ei:PlaySoundAction Source="MenuAccept_Stereo.WAV"/>
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </Button>
+                                <Button x:Name="HostTDMButton" Content="TEAM DEATHMATCH" Command="{Binding HostTDM}" Margin="0,6">
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="Click">
+                                            <ei:PlaySoundAction Source="MenuStart_Stereo.WAV"/>
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </Button>
+                                <Button x:Name="HostCTFButton" Content="CAPTURE THE FLAG" Command="{Binding HostTDM}" Margin="0" IsEnabled="False">
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="Click">
+                                            <ei:PlaySoundAction Source="MenuStart_Stereo.WAV"/>
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </Button>
                             </StackPanel>
                         </ContentControl>
                     </Viewbox>
