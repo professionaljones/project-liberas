@@ -33,10 +33,6 @@
 			"Enabled": true
 		},
 		{
-			"Name": "OnlineSubsystemSteam",
-			"Enabled": true
-		},
-		{
 			"Name": "OnlineSubsystemPS4",
 			"Enabled": true,
 			"WhitelistPlatforms": [
@@ -199,14 +195,14 @@
 		}
 	],
 	"TargetPlatforms": [
-		"MacNoEditor",
-		"PS4",
-		"WindowsNoEditor",
-		"XboxOne",
-		"Switch",
+		"Android",
+		"AllDesktop",
 		"HTML5",
+		"IOS",
 		"LinuxNoEditor",
-		"AllDesktop"
+		"MacNoEditor",
+		"TVOS",
+		"WindowsNoEditor"
 	],
 	"EpicSampleNameHash": "3868556100"
 }
