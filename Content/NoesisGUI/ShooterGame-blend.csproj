@@ -77,6 +77,10 @@
     <Compile Include="SampleData\HUDSampleData\HUDSampleData.xaml.cs">
       <DependentUpon>HUDSampleData.xaml</DependentUpon>
     </Compile>
+    <Page Include="ClassMenu.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="GameMenu.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

@@ -18,20 +18,21 @@ class AShooterPickup_Weapon : public AShooterPickup
 		/** check if pawn can use this pickup */
 		virtual bool CanBePickedUp(AShooterCharacter* TestPawn) const override;
 
-public:
-	/** What weapon are we picking up */
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"), Category = Pickup)
-		class AShooterWeapon* NewWeapon;
-
 protected:
+	UPROPERTY(BlueprintReadWrite, Category = Pickup)
+	AShooterWeapon* WeaponToAdd;
 
 	/** how much ammo does it give if it already exists in inventory */
 	UPROPERTY(EditDefaultsOnly, Category = Pickup)
 		int32 AmmoClips;
 
 	/** What weapon are we picking up */
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = Pickup)
+		TSubclassOf<AShooterWeapon> NewWeapon;
+
+	/** does player want to auto equip new weapon */
 	UPROPERTY(EditDefaultsOnly, Category = Pickup)
-		TSubclassOf<AShooterWeapon> WeaponToAdd;
+		bool bShouldAutoEquip = false;
 
 	
 

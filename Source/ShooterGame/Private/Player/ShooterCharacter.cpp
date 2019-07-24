@@ -73,7 +73,20 @@ void AShooterCharacter::PostInitializeComponents()
 	if (Role == ROLE_Authority)
 	{
 		Health = GetMaxHealth();
-		SpawnDefaultInventory();
+		//SpawnDefaultInventory();
+		if (PlayerClass == CT_Assault)
+		{
+			SpawnDefaultInventoryForClass(AssaultInventory);
+		}
+		else if (PlayerClass == CT_Engineer)
+		{
+			SpawnDefaultInventoryForClass(EngInventory);
+		}
+		else if (PlayerClass == CT_Medic)
+		{
+			SpawnDefaultInventoryForClass(MedicInventory);
+		}
+
 	}
 
 	// set initial mesh visibility (3rd person view)
@@ -147,6 +160,11 @@ FRotator AShooterCharacter::GetAimOffsets() const
 	const FRotator AimRotLS = AimDirLS.Rotation();
 
 	return AimRotLS;
+}
+
+TEnumAsByte<EPlayerClassType> AShooterCharacter::GetPlayerClass()
+{
+	return PlayerClass;
 }
 
 bool AShooterCharacter::IsEnemyFor(AController* TestPC) const
@@ -572,6 +590,34 @@ void AShooterCharacter::SpawnDefaultInventory()
 			AddWeapon(NewWeapon);
 		}
 	}
+
+
+	// equip first weapon in inventory
+	if (Inventory.Num() > 0)
+	{
+		EquipWeapon(Inventory[0]);
+	}
+}
+
+void AShooterCharacter::SpawnDefaultInventoryForClass(TArray<TSubclassOf<class AShooterWeapon>> ClassInventory)
+{
+	if (Role < ROLE_Authority)
+	{
+		return;
+	}
+
+	int32 NumWeaponClasses = ClassInventory.Num();
+	for (int32 i = 0; i < NumWeaponClasses; i++)
+	{
+		if (ClassInventory[i])
+		{
+			FActorSpawnParameters SpawnInfo;
+			SpawnInfo.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+			AShooterWeapon* NewWeapon = GetWorld()->SpawnActor<AShooterWeapon>(ClassInventory[i], SpawnInfo);
+			AddWeapon(NewWeapon);
+		}
+	}
+
 
 	// equip first weapon in inventory
 	if (Inventory.Num() > 0)
@@ -1033,6 +1079,15 @@ void AShooterCharacter::OnStopRunning()
 	SetRunning(false, false);
 }
 
+void AShooterCharacter::OnStartSpecial(TEnumAsByte<EPlayerClassType> ClassType)
+{
+	ClassType = GetPlayerClass();
+}
+
+void AShooterCharacter::OnStopSpecial(TEnumAsByte<EPlayerClassType> ClassType)
+{
+}
+
 bool AShooterCharacter::IsRunning() const
 {
 	if (!GetCharacterMovement())
@@ -1056,7 +1111,7 @@ void AShooterCharacter::Tick(float DeltaSeconds)
 	{
 		if (this->Health < this->GetMaxHealth())
 		{
-			this->Health += 5 * DeltaSeconds;
+			this->Health += 2 * DeltaSeconds;
 			if (Health > this->GetMaxHealth())
 			{
 				Health = this->GetMaxHealth();

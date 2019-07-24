@@ -5,6 +5,15 @@
 #include "ShooterTypes.h"
 #include "ShooterCharacter.generated.h"
 
+UENUM(BlueprintType)
+enum EPlayerClassType
+{
+	CT_Assault UMETA(DisplayName="Assault Class"),
+	CT_Engineer UMETA(DisplayName = "Engineer Class"),
+	CT_Medic UMETA(DisplayName = "Support Class"),
+	CT_Sniper UMETA(DisplayName = "Sharpshooter Class")
+};
+
 UCLASS(Abstract)
 class AShooterCharacter : public ACharacter
 {
@@ -48,6 +57,9 @@ class AShooterCharacter : public ACharacter
 	UFUNCTION(BlueprintCallable, Category = "Game|Weapon")
 	FRotator GetAimOffsets() const;
 
+	UFUNCTION(BlueprintCallable, Category = "Game|Player")
+		TEnumAsByte<EPlayerClassType> GetPlayerClass();
+
 	/**
 	* Check if pawn is enemy if given controller.
 	*
@@ -63,6 +75,7 @@ class AShooterCharacter : public ACharacter
 	*
 	* @param Weapon	Weapon to add.
 	*/
+
 	void AddWeapon(class AShooterWeapon* Weapon);
 
 	/**
@@ -191,6 +204,12 @@ class AShooterCharacter : public ACharacter
 	/** player released run action */
 	void OnStopRunning();
 
+	/** player pressed special action */
+	void OnStartSpecial(TEnumAsByte<EPlayerClassType> ClassType);
+
+	/** player released special action */
+	void OnStopSpecial(TEnumAsByte<EPlayerClassType> ClassType);
+
 	//////////////////////////////////////////////////////////////////////////
 	// Reading data
 
@@ -266,11 +285,22 @@ private:
 	/** pawn mesh: 1st person view */
 	UPROPERTY(VisibleDefaultsOnly, Category = Mesh)
 	USkeletalMeshComponent* Mesh1P;
+
+	UPROPERTY(EditDefaultsOnly, Category = Class)
+		TArray<TSubclassOf<class AShooterWeapon> > AssaultInventory;
+	UPROPERTY(EditDefaultsOnly, Category = Class)
+		TArray<TSubclassOf<class AShooterWeapon> > EngInventory;
+	UPROPERTY(EditDefaultsOnly, Category = Class)
+		TArray<TSubclassOf<class AShooterWeapon> > MedicInventory;
 protected:
 
 	///** socket or bone name for attaching weapon mesh */
 	//UPROPERTY(EditDefaultsOnly, Category = Inventory)
 	//FName WeaponAttachPoint;
+
+	/** Selected character class */
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = Pawn)
+		TEnumAsByte<EPlayerClassType> PlayerClass;
 
 	/** default inventory list */
 	UPROPERTY(EditDefaultsOnly, Category = Inventory)
@@ -452,6 +482,9 @@ protected:
 
 	/** [server] spawns default inventory */
 	void SpawnDefaultInventory();
+
+	/** [server] spawns default inventory for class type */
+	void SpawnDefaultInventoryForClass(TArray<TSubclassOf<class AShooterWeapon> > ClassInventory);
 
 	/** [server] remove all weapons from inventory and destroy them */
 	void DestroyInventory();

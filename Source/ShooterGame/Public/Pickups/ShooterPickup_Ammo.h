@@ -19,15 +19,17 @@ class AShooterPickup_Ammo : public AShooterPickup
 
 	bool IsForWeapon(UClass* WeaponClass);
 
-protected:
-
+public:
 	/** how much ammo does it give? */
-	UPROPERTY(EditDefaultsOnly, Category=Pickup)
-	int32 AmmoClips;
+	UPROPERTY(EditDefaultsOnly, Category = Pickup)
+		int32 AmmoClips;
 
 	/** which weapon gets ammo? */
-	UPROPERTY(EditDefaultsOnly, Category=Pickup)
-	TSubclassOf<AShooterWeapon> WeaponType;
+	UPROPERTY(EditDefaultsOnly, Category = Pickup)
+		TSubclassOf<AShooterWeapon> WeaponType;
+
+
+protected:
 
 	/** give pickup */
 	virtual void GivePickupTo(AShooterCharacter* Pawn) override;
