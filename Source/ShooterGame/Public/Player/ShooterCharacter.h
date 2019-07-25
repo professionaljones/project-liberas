@@ -299,7 +299,7 @@ protected:
 	//FName WeaponAttachPoint;
 
 	/** Selected character class */
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = Pawn)
+	UPROPERTY(EditDefaultsOnly, Category = Pawn)
 		TEnumAsByte<EPlayerClassType> PlayerClass;
 
 	/** default inventory list */

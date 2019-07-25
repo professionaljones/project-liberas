@@ -48,9 +48,9 @@ BEGIN
             VALUE "LegalCopyright", EPIC_COPYRIGHT_STRING
 			VALUE "ProductName", EPIC_PRODUCT_NAME
             VALUE "ProductVersion", ENGINE_VERSION_STRING
-			VALUE "FileDescription", "ShooterGame"
-            VALUE "InternalName", "ShooterGame"
-            VALUE "OriginalFilename", "ShooterGame.exe"
+			VALUE "FileDescription", "Brawlbots"
+            VALUE "InternalName", "Brawlbots"
+            VALUE "OriginalFilename", "Brawlbots.exe"
         END
     END
     BLOCK "VarFileInfo"

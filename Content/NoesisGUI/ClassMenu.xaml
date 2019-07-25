@@ -306,7 +306,7 @@
                                 <RowDefinition/>
                                 <RowDefinition/>
                             </Grid.RowDefinitions>
-                            <Button x:Name="AssaultButton" Grid.Row="0" Content="ASSAULT" Style="{StaticResource Style.MenuButton}" Command="{Binding Resume}">
+                            <Button x:Name="AssaultButton" Grid.Row="0" Content="ASSAULT" Style="{StaticResource Style.MenuButton}" Command="{Binding AssaultClass}">
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="GotFocus">
                                     <ei:PlaySoundAction Source="MenuCursor02_Stereo.WAV"/>
