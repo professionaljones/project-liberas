@@ -74,18 +74,20 @@ void AShooterCharacter::PostInitializeComponents()
 	{
 		Health = GetMaxHealth();
 		//SpawnDefaultInventory();
-		if (PlayerClass == CT_Assault)
+		if (StartingPlayerClass == CT_Assault)
 		{
 			SpawnDefaultInventoryForClass(AssaultInventory);
 		}
-		else if (PlayerClass == CT_Engineer)
+		else if (StartingPlayerClass == CT_Engineer)
 		{
 			SpawnDefaultInventoryForClass(EngInventory);
 		}
-		else if (PlayerClass == CT_Medic)
+		else if (StartingPlayerClass == CT_Medic)
 		{
 			SpawnDefaultInventoryForClass(MedicInventory);
 		}
+
+		
 
 	}
 
@@ -164,7 +166,28 @@ FRotator AShooterCharacter::GetAimOffsets() const
 
 TEnumAsByte<EPlayerClassType> AShooterCharacter::GetPlayerClass()
 {
-	return PlayerClass;
+	return StartingPlayerClass;
+}
+
+void AShooterCharacter::UpdateWeaponInventoryForClass()
+{
+	if (NewPlayerClass != CT_None)
+	{
+		DestroyInventory();
+		if (NewPlayerClass == CT_Assault)
+		{
+			SpawnDefaultInventoryForClass(AssaultInventory);
+		}
+		else if (NewPlayerClass == CT_Engineer)
+		{
+			SpawnDefaultInventoryForClass(EngInventory);
+		}
+		else if (NewPlayerClass == CT_Medic)
+		{
+			SpawnDefaultInventoryForClass(MedicInventory);
+		}
+	}
+	
 }
 
 bool AShooterCharacter::IsEnemyFor(AController* TestPC) const

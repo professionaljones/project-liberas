@@ -8,6 +8,7 @@
 UENUM(BlueprintType)
 enum EPlayerClassType
 {
+	CT_None UMETA(DisplayName = "No Class"),
 	CT_Assault UMETA(DisplayName="Assault Class"),
 	CT_Engineer UMETA(DisplayName = "Engineer Class"),
 	CT_Medic UMETA(DisplayName = "Support Class"),
@@ -59,6 +60,9 @@ class AShooterCharacter : public ACharacter
 
 	UFUNCTION(BlueprintCallable, Category = "Game|Player")
 		TEnumAsByte<EPlayerClassType> GetPlayerClass();
+
+	UFUNCTION(BlueprintCallable, Category = "Game|Player")
+		void UpdateWeaponInventoryForClass();
 
 	/**
 	* Check if pawn is enemy if given controller.
@@ -294,13 +298,13 @@ private:
 		TArray<TSubclassOf<class AShooterWeapon> > MedicInventory;
 protected:
 
-	///** socket or bone name for attaching weapon mesh */
-	//UPROPERTY(EditDefaultsOnly, Category = Inventory)
-	//FName WeaponAttachPoint;
-
 	/** Selected character class */
 	UPROPERTY(EditDefaultsOnly, Category = Pawn)
-		TEnumAsByte<EPlayerClassType> PlayerClass;
+		TEnumAsByte<EPlayerClassType> StartingPlayerClass = CT_Assault;
+
+	/** Selected character class to respawn as */
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = Pawn)
+		TEnumAsByte<EPlayerClassType> NewPlayerClass = CT_None;
 
 	/** default inventory list */
 	UPROPERTY(EditDefaultsOnly, Category = Inventory)

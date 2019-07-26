@@ -19,7 +19,16 @@ void AShooterPickup_Weapon::GivePickupTo(AShooterCharacter* Pawn)
 {
 	if (Pawn)
 	{
-		Pawn->AddWeapon(WeaponToAdd);
+	/*	if (Pawn->FindWeapon(NewWeapon))
+		{
+			int32 Qty = AmmoClips * WeaponToAdd->GetAmmoPerClip();
+			WeaponToAdd->GiveAmmo(Qty);
+		}
+		else
+		{*/
+			Pawn->AddWeapon(WeaponToAdd);
+		//}
+		
 
 		// Fire event for collected health
 		const auto Events = Online::GetEventsInterface();
