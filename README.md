@@ -26,6 +26,6 @@ TBD
 
 ## Meta
 
-Brandon Jones – [@profjonesESS](https://twitter.com/dbader_org) – YourEmail@example.com
+Brandon Jones – [@Gunsandahat](https://twitter.com/Gunsandahat) – brandonjones@digiplaygaming.com
 
 Distributed under the XYZ license. See ``LICENSE`` for more information.
