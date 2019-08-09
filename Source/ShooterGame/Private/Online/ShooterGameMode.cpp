@@ -16,7 +16,7 @@ AShooterGameMode::AShooterGameMode(const FObjectInitializer& ObjectInitializer) 
 {
 	static ConstructorHelpers::FClassFinder<APawn> PlayerPawnOb(TEXT("/Game/Blueprints/Pawns/PlayerPawn"));
 	DefaultPawnClass = PlayerPawnOb.Class;
-	
+
 	static ConstructorHelpers::FClassFinder<APawn> BotPawnOb(TEXT("/Game/Blueprints/Pawns/BotPawn"));
 	BotPawnClass = BotPawnOb.Class;
 
@@ -29,9 +29,9 @@ AShooterGameMode::AShooterGameMode(const FObjectInitializer& ObjectInitializer) 
 
 	MinRespawnDelay = 5.0f;
 
-	bAllowBots = true;	
+	bAllowBots = true;
 	bNeedsBotCreation = true;
-	bUseSeamlessTravel = true;	
+	bUseSeamlessTravel = true;
 }
 
 FString AShooterGameMode::GetBotsCountOptionName()
@@ -42,7 +42,7 @@ FString AShooterGameMode::GetBotsCountOptionName()
 void AShooterGameMode::InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage)
 {
 	const int32 BotsCountOptionValue = UGameplayStatics::GetIntOption(Options, GetBotsCountOptionName(), 0);
-	SetAllowBots(BotsCountOptionValue > 0 ? true : false, BotsCountOptionValue);	
+	SetAllowBots(BotsCountOptionValue > 0 ? true : false, BotsCountOptionValue);
 	Super::InitGame(MapName, Options, ErrorMessage);
 
 	const UGameInstance* GameInstance = GetGameInstance();
@@ -88,7 +88,7 @@ void AShooterGameMode::DefaultTimer()
 	if (MyGameState && MyGameState->RemainingTime > 0 && !MyGameState->bTimerPaused)
 	{
 		MyGameState->RemainingTime--;
-		
+
 		if (MyGameState->RemainingTime <= 0)
 		{
 			if (GetMatchState() == MatchState::WaitingPostMatch)
@@ -103,12 +103,12 @@ void AShooterGameMode::DefaultTimer()
 				for (FConstControllerIterator It = GetWorld()->GetControllerIterator(); It; ++It)
 				{
 					AShooterPlayerController* PlayerController = Cast<AShooterPlayerController>(*It);
-					
+
 					if (PlayerController && MyGameState)
 					{
 						AShooterPlayerState* PlayerState = Cast<AShooterPlayerState>((*It)->PlayerState);
 						const bool bIsWinner = IsWinner(PlayerState);
-					
+
 						PlayerController->ClientSendRoundEndEvent(bIsWinner, MyGameState->ElapsedTime);
 					}
 				}
@@ -156,8 +156,8 @@ void AShooterGameMode::HandleMatchHasStarted()
 	Super::HandleMatchHasStarted();
 
 	AShooterGameState* const MyGameState = Cast<AShooterGameState>(GameState);
-	MyGameState->RemainingTime = RoundTime;	
-	StartBots();	
+	MyGameState->RemainingTime = RoundTime;
+	StartBots();
 
 	// notify players
 	for (FConstControllerIterator It = GetWorld()->GetControllerIterator(); It; ++It)
@@ -176,7 +176,7 @@ void AShooterGameMode::FinishMatch()
 	if (IsMatchInProgress())
 	{
 		EndMatch();
-		DetermineMatchWinner();		
+		DetermineMatchWinner();
 
 		// notify players
 		for (FConstControllerIterator It = GetWorld()->GetControllerIterator(); It; ++It)
@@ -252,7 +252,7 @@ void AShooterGameMode::PreLogin(const FString& Options, const FString& Address, 
 {
 	AShooterGameState* const MyGameState = Cast<AShooterGameState>(GameState);
 	const bool bMatchIsOver = MyGameState && MyGameState->HasMatchEnded();
-	if( bMatchIsOver )
+	if (bMatchIsOver)
 	{
 		ErrorMessage = TEXT("Match is over!");
 	}
@@ -344,9 +344,15 @@ bool AShooterGameMode::ShouldSpawnAtStartSpot(AController* Player)
 
 UClass* AShooterGameMode::GetDefaultPawnClassForController_Implementation(AController* InController)
 {
+	TSubclassOf<APawn> NewBotPawn;
+	int32 NumBotPawns = BotPawnClassArray.Num();
 	if (InController->IsA<AShooterAIController>())
 	{
-		return BotPawnClass;
+		for (int32 i = 0; i < NumBotPawns; i++)
+		{
+			NewBotPawn = BotPawnClassArray[i];
+		}
+		return NewBotPawn;
 	}
 
 	return Super::GetDefaultPawnClassForController_Implementation(InController);
@@ -383,7 +389,7 @@ AActor* AShooterGameMode::ChoosePlayerStart_Implementation(AController* Player)
 		}
 	}
 
-	
+
 	if (BestStart == NULL)
 	{
 		if (PreferredSpawns.Num() > 0)
@@ -422,13 +428,14 @@ bool AShooterGameMode::IsSpawnpointAllowed(APlayerStart* SpawnPoint, AController
 
 bool AShooterGameMode::IsSpawnpointPreferred(APlayerStart* SpawnPoint, AController* Player) const
 {
-	ACharacter* MyPawn = Cast<ACharacter>((*DefaultPawnClass)->GetDefaultObject<ACharacter>());	
+	ACharacter* MyPawn = Cast<ACharacter>((*DefaultPawnClass)->GetDefaultObject<ACharacter>());
 	AShooterAIController* AIController = Cast<AShooterAIController>(Player);
-	if( AIController != nullptr )
+	if (AIController != nullptr)
 	{
-		MyPawn = Cast<ACharacter>(BotPawnClass->GetDefaultObject<ACharacter>());
+
+
 	}
-	
+
 	if (MyPawn)
 	{
 		const FVector SpawnLocation = SpawnPoint->GetActorLocation();
@@ -453,7 +460,7 @@ bool AShooterGameMode::IsSpawnpointPreferred(APlayerStart* SpawnPoint, AControll
 	{
 		return false;
 	}
-	
+
 	return true;
 }
 
@@ -462,7 +469,7 @@ void AShooterGameMode::CreateBotControllers()
 	UWorld* World = GetWorld();
 	int32 ExistingBots = 0;
 	for (FConstControllerIterator It = World->GetControllerIterator(); It; ++It)
-	{		
+	{
 		AShooterAIController* AIC = Cast<AShooterAIController>(*It);
 		if (AIC)
 		{
@@ -497,24 +504,24 @@ void AShooterGameMode::StartBots()
 	// checking number of existing human player.
 	UWorld* World = GetWorld();
 	for (FConstControllerIterator It = World->GetControllerIterator(); It; ++It)
-	{		
+	{
 		AShooterAIController* AIC = Cast<AShooterAIController>(*It);
 		if (AIC)
 		{
 			RestartPlayer(AIC);
 		}
-	}	
+	}
 }
 
 void AShooterGameMode::InitBot(AShooterAIController* AIController, int32 BotNum)
-{	
+{
 	if (AIController)
 	{
 		if (AIController->PlayerState)
 		{
 			FString BotName = FString::Printf(TEXT("Bot %d"), BotNum);
 			AIController->PlayerState->SetPlayerName(BotName);
-		}		
+		}
 	}
 }
 
