@@ -31,6 +31,7 @@ _Please follow each repo/software's instructions as written, please contact us i
 
 ## Contact
 _Those listed will attempt to respond to messages as soon as possible. Please be patient._
+
 Brandon Jones – [@Gunsandahat](https://twitter.com/Gunsandahat) – brandonjones@digiplaygaming.com
 
 
