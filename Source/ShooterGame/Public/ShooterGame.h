@@ -9,6 +9,7 @@
 #include "SoundDefinitions.h"
 #include "Net/UnrealNetwork.h"
 #include "ShooterGameMode.h"
+#include "Kismet/KismetMathLibrary.h"
 #include "ShooterGameState.h"
 #include "ShooterCharacter.h"
 #include "ShooterCharacterMovement.h"

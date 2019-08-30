@@ -127,6 +127,9 @@ class AShooterCharacter : public ACharacter
 	/** [server + local] change running state */
 	void SetRunning(bool bNewRunning, bool bToggle);
 
+	/** <GB> [server + local] change third person state (server has to know that player is using third person) */
+	void SetThirdPerson(bool bNewThirdPerson);
+
 	//////////////////////////////////////////////////////////////////////////
 	// Animations
 
@@ -207,6 +210,15 @@ class AShooterCharacter : public ACharacter
 
 	/** player released run action */
 	void OnStopRunning();
+
+	/** player pressed 3rd person action */
+	void OnThirdPerson();
+
+	/** player toggled 3rd person action */
+	void OnThirdPersonToggle();
+
+	/** player released 3rd person action */
+	void OnFirstPerson();
 
 	/** player pressed special action */
 	void OnStartSpecial(TEnumAsByte<EPlayerClassType> ClassType);
@@ -290,6 +302,14 @@ private:
 	UPROPERTY(VisibleDefaultsOnly, Category = Mesh)
 	USkeletalMeshComponent* Mesh1P;
 
+	/** third person camera */
+	UPROPERTY(VisibleDefaultsOnly, Category = Camera)
+		UCameraComponent* ThirdPersonCamera;
+
+	/** an arm for the third person camera*/
+	UPROPERTY(VisibleDefaultsOnly, Category = Camera)
+		USpringArmComponent* ThirdPersonCameraArm;
+
 	UPROPERTY(EditDefaultsOnly, Category = Class)
 		TArray<TSubclassOf<class AShooterWeapon> > AssaultInventory;
 	UPROPERTY(EditDefaultsOnly, Category = Class)
@@ -346,6 +366,10 @@ protected:
 
 	/** current firing state */
 	uint8 bWantsToFire : 1;
+
+	/** flag used to toggle third person camera view */
+	UPROPERTY(Transient, Replicated)
+		uint8 bIsThirdPerson;
 
 	/** when low health effects should start */
 	float LowHealthPercentage;
@@ -411,6 +435,12 @@ protected:
 
 	/** Responsible for cleaning up bodies on clients. */
 	virtual void TornOff();
+
+	/** camera update in first person */
+	void UpdateCameraFirstPerson(const FVector& CameraLocation, const FRotator& CameraRotation);
+
+	/** camera update in third person */
+	void UpdateCameraThirdPerson(const FVector& CameraLocation, const FRotator& CameraRotation);
 
 private:
 
@@ -504,6 +534,10 @@ protected:
 	/** update targeting state */
 	UFUNCTION(reliable, server, WithValidation)
 	void ServerSetRunning(bool bNewRunning, bool bToggle);
+
+	/** update first person state*/
+	UFUNCTION(reliable, server, WithValidation)
+		void ServerSetThirdPerson(bool bNewThirdPerson);
 
 	/** Builds list of points to check for pausing replication for a connection*/
 	void BuildPauseReplicationCheckPoints(TArray<FVector>& RelevancyCheckPoints);

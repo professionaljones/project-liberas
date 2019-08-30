@@ -114,8 +114,8 @@ void AShooterWeapon::OnEquipFinished()
 	bPendingEquip = false;
 
 	// Determine the state so that the can reload checks will work
-	DetermineWeaponState(); 
-	
+	DetermineWeaponState();
+
 	if (MyPawn)
 	{
 		// try to reload empty clip
@@ -127,7 +127,7 @@ void AShooterWeapon::OnEquipFinished()
 		}
 	}
 
-	
+
 }
 
 void AShooterWeapon::OnUnEquip()
@@ -183,12 +183,12 @@ void AShooterWeapon::AttachMeshToPawn()
 
 		// For locally controller players we attach both weapons and let the bOnlyOwnerSee, bOwnerNoSee flags deal with visibility.
 		FName AttachPoint = MyPawn->GetWeaponAttachPoint();
-		if( MyPawn->IsLocallyControlled() == true )
+		if (MyPawn->IsLocallyControlled() == true)
 		{
 			USkeletalMeshComponent* PawnMesh1p = MyPawn->GetSpecifcPawnMesh(true);
 			USkeletalMeshComponent* PawnMesh3p = MyPawn->GetSpecifcPawnMesh(false);
-			Mesh1P->SetHiddenInGame( false );
-			Mesh3P->SetHiddenInGame( false );
+			Mesh1P->SetHiddenInGame(false);
+			Mesh3P->SetHiddenInGame(false);
 			Mesh1P->AttachToComponent(PawnMesh1p, FAttachmentTransformRules::KeepRelativeTransform, AttachPoint);
 			Mesh3P->AttachToComponent(PawnMesh3p, FAttachmentTransformRules::KeepRelativeTransform, AttachPoint);
 		}
@@ -197,7 +197,7 @@ void AShooterWeapon::AttachMeshToPawn()
 			USkeletalMeshComponent* UseWeaponMesh = GetWeaponMesh();
 			USkeletalMeshComponent* UsePawnMesh = MyPawn->GetPawnMesh();
 			UseWeaponMesh->AttachToComponent(UsePawnMesh, FAttachmentTransformRules::KeepRelativeTransform, AttachPoint);
-			UseWeaponMesh->SetHiddenInGame( false );
+			UseWeaponMesh->SetHiddenInGame(false);
 		}
 	}
 }
@@ -255,7 +255,7 @@ void AShooterWeapon::StartReload(bool bFromReplication)
 		bPendingReload = true;
 		DetermineWeaponState();
 
-		float AnimDuration = PlayWeaponAnimation(ReloadAnim);		
+		float AnimDuration = PlayWeaponAnimation(ReloadAnim);
 		if (AnimDuration <= 0.0f)
 		{
 			AnimDuration = WeaponConfig.NoAnimReloadDuration;
@@ -266,7 +266,7 @@ void AShooterWeapon::StartReload(bool bFromReplication)
 		{
 			GetWorldTimerManager().SetTimer(TimerHandle_ReloadWeapon, this, &AShooterWeapon::ReloadWeapon, FMath::Max(0.1f, AnimDuration - 0.1f), false);
 		}
-		
+
 		if (MyPawn && MyPawn->IsLocallyControlled())
 		{
 			PlayWeaponSound(ReloadSound);
@@ -335,16 +335,16 @@ void AShooterWeapon::ClientStartReload_Implementation()
 bool AShooterWeapon::CanFire() const
 {
 	bool bCanFire = MyPawn && MyPawn->CanFire();
-	bool bStateOKToFire = ( ( CurrentState ==  EWeaponState::Idle ) || ( CurrentState == EWeaponState::Firing) );	
-	return (( bCanFire == true ) && ( bStateOKToFire == true ) && ( bPendingReload == false ));
+	bool bStateOKToFire = ((CurrentState == EWeaponState::Idle) || (CurrentState == EWeaponState::Firing));
+	return ((bCanFire == true) && (bStateOKToFire == true) && (bPendingReload == false));
 }
 
 bool AShooterWeapon::CanReload() const
 {
 	bool bCanReload = (!MyPawn || MyPawn->CanReload());
-	bool bGotAmmo = ( CurrentAmmoInClip < WeaponConfig.AmmoPerClip) && (CurrentAmmo - CurrentAmmoInClip > 0 || HasInfiniteClip());
-	bool bStateOKToReload = ( ( CurrentState ==  EWeaponState::Idle ) || ( CurrentState == EWeaponState::Firing) );
-	return ( ( bCanReload == true ) && ( bGotAmmo == true ) && ( bStateOKToReload == true) );	
+	bool bGotAmmo = (CurrentAmmoInClip < WeaponConfig.AmmoPerClip) && (CurrentAmmo - CurrentAmmoInClip > 0 || HasInfiniteClip());
+	bool bStateOKToReload = ((CurrentState == EWeaponState::Idle) || (CurrentState == EWeaponState::Firing));
+	return ((bCanReload == true) && (bGotAmmo == true) && (bStateOKToReload == true));
 }
 
 
@@ -362,7 +362,7 @@ void AShooterWeapon::GiveAmmo(int AddAmount)
 	{
 		BotAI->CheckAmmo(this);
 	}
-	
+
 	// start reload if clip was empty
 	if (GetCurrentAmmoInClip() <= 0 &&
 		CanReload() &&
@@ -384,24 +384,24 @@ void AShooterWeapon::UseAmmo()
 		CurrentAmmo--;
 	}
 
-	AShooterAIController* BotAI = MyPawn ? Cast<AShooterAIController>(MyPawn->GetController()) : NULL;	
+	AShooterAIController* BotAI = MyPawn ? Cast<AShooterAIController>(MyPawn->GetController()) : NULL;
 	AShooterPlayerController* PlayerController = MyPawn ? Cast<AShooterPlayerController>(MyPawn->GetController()) : NULL;
 	if (BotAI)
 	{
 		BotAI->CheckAmmo(this);
 	}
-	else if(PlayerController)
+	else if (PlayerController)
 	{
 		AShooterPlayerState* PlayerState = Cast<AShooterPlayerState>(PlayerController->PlayerState);
 		switch (GetAmmoType())
 		{
-			case EAmmoType::ERocket:
-				PlayerState->AddRocketsFired(1);
-				break;
-			case EAmmoType::EBullet:
-			default:
-				PlayerState->AddBulletsFired(1);
-				break;			
+		case EAmmoType::ERocket:
+			PlayerState->AddRocketsFired(1);
+			break;
+		case EAmmoType::EBullet:
+		default:
+			PlayerState->AddBulletsFired(1);
+			break;
 		}
 	}
 }
@@ -420,7 +420,7 @@ void AShooterWeapon::HandleFiring()
 			FireWeapon();
 
 			UseAmmo();
-			
+
 			// update firing FX on remote clients if function was called on server
 			BurstCounter++;
 		}
@@ -440,7 +440,7 @@ void AShooterWeapon::HandleFiring()
 				MyPC->NotifyOutOfAmmo();
 			}
 		}
-		
+
 		// stop weapon fire FX, but stay in Firing state
 		if (BurstCounter > 0)
 		{
@@ -537,9 +537,9 @@ void AShooterWeapon::DetermineWeaponState()
 
 	if (bIsEquipped)
 	{
-		if( bPendingReload  )
+		if (bPendingReload)
 		{
-			if( CanReload() == false )
+			if (CanReload() == false)
 			{
 				NewState = CurrentState;
 			}
@@ -547,8 +547,8 @@ void AShooterWeapon::DetermineWeaponState()
 			{
 				NewState = EWeaponState::Reloading;
 			}
-		}		
-		else if ( (bPendingReload == false ) && ( bWantsToFire == true ) && ( CanFire() == true ))
+		}
+		else if ((bPendingReload == false) && (bWantsToFire == true) && (CanFire() == true))
 		{
 			NewState = EWeaponState::Firing;
 		}
@@ -586,7 +586,7 @@ void AShooterWeapon::OnBurstFinished()
 	{
 		StopSimulatingWeaponFire();
 	}
-	
+
 	GetWorldTimerManager().ClearTimer(TimerHandle_HandleFiring);
 	bRefiring = false;
 }
@@ -647,7 +647,7 @@ FVector AShooterWeapon::GetCameraAim() const
 	}
 	else if (Instigator)
 	{
-		FinalAim = Instigator->GetBaseAimRotation().Vector();		
+		FinalAim = Instigator->GetBaseAimRotation().Vector();
 	}
 
 	return FinalAim;
@@ -669,12 +669,12 @@ FVector AShooterWeapon::GetAdjustedAim() const
 	{
 		// Now see if we have an AI controller - we will want to get the aim from there if we do
 		AShooterAIController* AIController = MyPawn ? Cast<AShooterAIController>(MyPawn->Controller) : NULL;
-		if(AIController != NULL )
+		if (AIController != NULL)
 		{
 			FinalAim = AIController->GetControlRotation().Vector();
 		}
 		else
-		{			
+		{
 			FinalAim = Instigator->GetBaseAimRotation().Vector();
 		}
 	}
@@ -738,7 +738,7 @@ void AShooterWeapon::SetOwningPawn(AShooterCharacter* NewOwner)
 		MyPawn = NewOwner;
 		// net owner for RPC calls
 		SetOwner(NewOwner);
-	}	
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -782,6 +782,7 @@ void AShooterWeapon::OnRep_Reload()
 
 void AShooterWeapon::SimulateWeaponFire()
 {
+	AShooterPlayerController* PC = (MyPawn != NULL) ? Cast<AShooterPlayerController>(MyPawn->Controller) : NULL;
 	if (Role == ROLE_Authority && CurrentState != EWeaponState::Firing)
 	{
 		return;
@@ -793,75 +794,85 @@ void AShooterWeapon::SimulateWeaponFire()
 		if (!bLoopedMuzzleFX || MuzzlePSC == NULL)
 		{
 			// Split screen requires we create 2 effects. One that we see and one that the other player sees.
-			if( (MyPawn != NULL ) && ( MyPawn->IsLocallyControlled() == true ) )
+			if (PC != NULL)
 			{
-				AController* PlayerCon = MyPawn->GetController();				
-				if( PlayerCon != NULL )
+				const bool isFirstPerson = MyPawn->IsFirstPerson();
+
+				// <GB> In first person, this will be the Shooting player's effect
+				if (isFirstPerson)
 				{
 					Mesh1P->GetSocketLocation(MuzzleAttachPoint);
 					MuzzlePSC = UGameplayStatics::SpawnEmitterAttached(MuzzleFX, Mesh1P, MuzzleAttachPoint);
 					MuzzlePSC->bOwnerNoSee = false;
 					MuzzlePSC->bOnlyOwnerSee = true;
+				}
 
+				// <GB> In third person, this will be the Other player's effect
+				else
+				{
 					Mesh3P->GetSocketLocation(MuzzleAttachPoint);
-					MuzzlePSCSecondary = UGameplayStatics::SpawnEmitterAttached(MuzzleFX, Mesh3P, MuzzleAttachPoint);
-					MuzzlePSCSecondary->bOwnerNoSee = true;
-					MuzzlePSCSecondary->bOnlyOwnerSee = false;				
-				}				
+					MuzzlePSC = UGameplayStatics::SpawnEmitterAttached(MuzzleFX, Mesh3P, MuzzleAttachPoint);
+					MuzzlePSC->bOwnerNoSee = true;
+					MuzzlePSC->bOnlyOwnerSee = false;
+				}
+
+				// <GB> In first person, this will be the Other player's effect
+				// <GB> In third person, this will be the Shooting player's effect
+				Mesh3P->GetSocketLocation(MuzzleAttachPoint);
+				MuzzlePSCSecondary = UGameplayStatics::SpawnEmitterAttached(MuzzleFX, Mesh3P, MuzzleAttachPoint);
+				MuzzlePSCSecondary->bOwnerNoSee = isFirstPerson;
+				MuzzlePSCSecondary->bOnlyOwnerSee = !isFirstPerson;
 			}
-			else
+		}
+
+		if (!bLoopedFireAnim || !bPlayingFireAnim)
+		{
+			PlayWeaponAnimation(FireAnim);
+			bPlayingFireAnim = true;
+		}
+
+		if (bLoopedFireSound)
+		{
+			if (FireAC == NULL)
 			{
-				MuzzlePSC = UGameplayStatics::SpawnEmitterAttached(MuzzleFX, UseWeaponMesh, MuzzleAttachPoint);
+				FireAC = PlayWeaponSound(FireLoopSound);
 			}
 		}
-	}
-
-	if (!bLoopedFireAnim || !bPlayingFireAnim)
-	{
-		PlayWeaponAnimation(FireAnim);
-		bPlayingFireAnim = true;
-	}
-
-	if (bLoopedFireSound)
-	{
-		if (FireAC == NULL)
+		else
 		{
-			FireAC = PlayWeaponSound(FireLoopSound);
+			PlayWeaponSound(FireSound);
 		}
-	}
-	else
-	{
-		PlayWeaponSound(FireSound);
-	}
 
-	AShooterPlayerController* PC = (MyPawn != NULL) ? Cast<AShooterPlayerController>(MyPawn->Controller) : NULL;
-	if (PC != NULL && PC->IsLocalController())
-	{
-		if (FireCameraShake != NULL)
+
+		if (PC != NULL && PC->IsLocalController())
 		{
-			PC->ClientPlayCameraShake(FireCameraShake, 1);
+			if (FireCameraShake != NULL)
+			{
+				PC->ClientPlayCameraShake(FireCameraShake, 1);
+			}
+			if (FireForceFeedback != NULL && PC->IsVibrationEnabled())
+			{
+				FForceFeedbackParameters FFParams;
+				FFParams.bLooping = false;
+				FFParams.bPlayWhilePaused = false;
+				FFParams.Tag = "Weapon";
+				PC->ClientPlayForceFeedback(FireForceFeedback, FFParams);
+			}
 		}
-		if (FireForceFeedback != NULL && PC->IsVibrationEnabled())
-		{
-			FForceFeedbackParameters FFParams;
-			FFParams.bLooping = false;
-			FFParams.bPlayWhilePaused = false;
-			FFParams.Tag = "Weapon";
-			PC->ClientPlayForceFeedback(FireForceFeedback, FFParams);
-		}
+
 	}
 }
 
 void AShooterWeapon::StopSimulatingWeaponFire()
 {
-	if (bLoopedMuzzleFX )
+	if (bLoopedMuzzleFX)
 	{
-		if( MuzzlePSC != NULL )
+		if (MuzzlePSC != NULL)
 		{
 			MuzzlePSC->DeactivateSystem();
 			MuzzlePSC = NULL;
 		}
-		if( MuzzlePSCSecondary != NULL )
+		if (MuzzlePSCSecondary != NULL)
 		{
 			MuzzlePSCSecondary->DeactivateSystem();
 			MuzzlePSCSecondary = NULL;
@@ -883,17 +894,17 @@ void AShooterWeapon::StopSimulatingWeaponFire()
 	}
 }
 
-void AShooterWeapon::GetLifetimeReplicatedProps( TArray< FLifetimeProperty > & OutLifetimeProps ) const
+void AShooterWeapon::GetLifetimeReplicatedProps(TArray< FLifetimeProperty >& OutLifetimeProps) const
 {
-	Super::GetLifetimeReplicatedProps( OutLifetimeProps );
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
-	DOREPLIFETIME( AShooterWeapon, MyPawn );
+	DOREPLIFETIME(AShooterWeapon, MyPawn);
 
-	DOREPLIFETIME_CONDITION( AShooterWeapon, CurrentAmmo,		COND_OwnerOnly );
-	DOREPLIFETIME_CONDITION( AShooterWeapon, CurrentAmmoInClip, COND_OwnerOnly );
+	DOREPLIFETIME_CONDITION(AShooterWeapon, CurrentAmmo, COND_OwnerOnly);
+	DOREPLIFETIME_CONDITION(AShooterWeapon, CurrentAmmoInClip, COND_OwnerOnly);
 
-	DOREPLIFETIME_CONDITION( AShooterWeapon, BurstCounter,		COND_SkipOwner );
-	DOREPLIFETIME_CONDITION( AShooterWeapon, bPendingReload,	COND_SkipOwner );
+	DOREPLIFETIME_CONDITION(AShooterWeapon, BurstCounter, COND_SkipOwner);
+	DOREPLIFETIME_CONDITION(AShooterWeapon, bPendingReload, COND_SkipOwner);
 }
 
 USkeletalMeshComponent* AShooterWeapon::GetWeaponMesh() const
@@ -926,6 +937,18 @@ bool AShooterWeapon::IsAttachedToPawn() const
 {
 	return bIsEquipped || bPendingEquip;
 }
+
+void AShooterWeapon::UpdateMeshes()
+{
+	if (MyPawn)
+	{
+		const bool bFirstPerson = MyPawn->IsFirstPerson();
+		Mesh1P->SetOwnerNoSee(!bFirstPerson);
+		Mesh3P->SetOwnerNoSee(bFirstPerson);
+	}
+}
+
+
 
 EWeaponState::Type AShooterWeapon::GetCurrentState() const
 {

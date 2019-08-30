@@ -6,6 +6,7 @@
 #include "Player/ShooterSpectatorPawn.h"
 #include "Player/ShooterDemoSpectator.h"
 #include "Online/ShooterGameMode.h"
+#include "Kismet/KismetMathLibrary.h"
 #include "Online/ShooterPlayerState.h"
 #include "Online/ShooterGameSession.h"
 #include "Bots/ShooterAIController.h"
@@ -344,18 +345,17 @@ bool AShooterGameMode::ShouldSpawnAtStartSpot(AController* Player)
 
 UClass* AShooterGameMode::GetDefaultPawnClassForController_Implementation(AController* InController)
 {
-	TSubclassOf<APawn> NewBotPawn;
-	int32 NumBotPawns = BotPawnClassArray.Num();
+	int32 NumEnemyToSpawn = UKismetMathLibrary::RandomIntegerInRange(0, 2);
 	if (InController->IsA<AShooterAIController>())
 	{
-		for (int32 i = 0; i < NumBotPawns; i++)
+		if (BotPawnClassArray[NumEnemyToSpawn])
 		{
-			NewBotPawn = BotPawnClassArray[i];
+			return BotPawnClassArray[NumEnemyToSpawn];
 		}
-		return NewBotPawn;
-	}
 
+	}
 	return Super::GetDefaultPawnClassForController_Implementation(InController);
+
 }
 
 AActor* AShooterGameMode::ChoosePlayerStart_Implementation(AController* Player)
