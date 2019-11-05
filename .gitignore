@@ -81,3 +81,5 @@ DerivedDataCache/*
 # Plugin-specific files
 Plugins/Runtime/Substance/Intermediate/**
 Plugins/Runtime/Substance/Binaries/**
+Build/HTML5/FileOpenOrder/CookerOpenOrder.log
+Build/HTML5/FileOpenOrder/EditorOpenOrder.log
