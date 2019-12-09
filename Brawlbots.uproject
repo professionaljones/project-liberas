@@ -1,6 +1,6 @@
 {
   "FileVersion": 3,
-  "EngineAssociation": "4.22",
+  "EngineAssociation": "4.23",
   "Category": "Samples",
   "Description": "",
   "Modules": [
@@ -91,10 +91,6 @@
     {
       "Name": "UObjectPlugin",
       "Enabled": false
-    },
-    {
-      "Name": "ConcertFrontend",
-      "Enabled": true
     },
     {
       "Name": "MagicLeapMedia",

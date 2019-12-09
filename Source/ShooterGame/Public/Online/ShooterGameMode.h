@@ -10,22 +10,16 @@ class AShooterPlayerState;
 class AShooterPickup;
 class FUniqueNetId;
 
-UCLASS(config=Game)
+UCLASS(config = Game)
 class AShooterGameMode : public AGameMode
 {
-	GENERATED_UCLASS_BODY()	
-
-	/** The bot pawn class */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=GameMode)
-	TSubclassOf<APawn> BotPawnClass;
-
-	/** The bot pawn class */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = GameMode)
-		TArray<TSubclassOf<APawn>> BotPawnClassArray;
+	GENERATED_UCLASS_BODY()
 
 
-	UFUNCTION(exec)
-	void SetAllowBots(bool bInAllowBots, int32 InMaxBots = 8);
+
+
+		UFUNCTION(exec)
+		void SetAllowBots(bool bInAllowBots, int32 InMaxBots = 8);
 
 	virtual void PreInitializeComponents() override;
 
@@ -75,45 +69,45 @@ class AShooterGameMode : public AGameMode
 	void CreateBotControllers();
 
 	/** Create a bot */
-	AShooterAIController* CreateBot(int32 BotNum);	
+	AShooterAIController* CreateBot(int32 BotNum);
 
 protected:
 
 	/** delay between first player login and starting match */
 	UPROPERTY(config)
-	int32 WarmupTime;
+		int32 WarmupTime;
 
 	/** match duration */
 	UPROPERTY(config)
-	int32 RoundTime;
+		int32 RoundTime;
 
 	UPROPERTY(config)
-	int32 TimeBetweenMatches;
+		int32 TimeBetweenMatches;
 
 	/** score for kill */
 	UPROPERTY(config)
-	int32 KillScore;
+		int32 KillScore;
 
 	/** score for death */
 	UPROPERTY(config)
-	int32 DeathScore;
+		int32 DeathScore;
 
 	/** scale for self instigated damage */
 	UPROPERTY(config)
-	float DamageSelfScale;
+		float DamageSelfScale;
 
 	UPROPERTY(config)
-	int32 MaxBots;
+		int32 MaxBots;
 
 	UPROPERTY()
-	TArray<AShooterAIController*> BotControllers;
-	
+		TArray<AShooterAIController*> BotControllers;
+
 	/** Handle for efficient management of DefaultTimer timer */
 	FTimerHandle TimerHandle_DefaultTimer;
 
 	bool bNeedsBotCreation;
 
-	bool bAllowBots;		
+	bool bAllowBots;
 
 	/** spawning all bots for this game */
 	void StartBots();
@@ -134,13 +128,13 @@ protected:
 	virtual bool IsSpawnpointPreferred(APlayerStart* SpawnPoint, AController* Player) const;
 
 	/** Returns game session class to use */
-	virtual TSubclassOf<AGameSession> GetGameSessionClass() const override;	
+	virtual TSubclassOf<AGameSession> GetGameSessionClass() const override;
 
-public:	
+public:
 
 	/** finish current match and lock players */
 	UFUNCTION(exec)
-	void FinishMatch();
+		void FinishMatch();
 
 	/*Finishes the match and bumps everyone to main menu.*/
 	/*Only GameInstance should call this function */
@@ -150,6 +144,18 @@ public:
 	static FString GetBotsCountOptionName();
 
 	UPROPERTY()
-	TArray<AShooterPickup*> LevelPickups;
+		TArray<AShooterPickup*> LevelPickups;
+
+	/** The bot pawn class */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = GameMode)
+		TSubclassOf<APawn> BotPawnClass;
+
+	/** The bot pawn class array */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = GameMode)
+		TArray<TSubclassOf<APawn>> BotPawnClassArray;
+
+private:
+	int32 NumEnemyToSpawn = 0;
+	int32 ArrayLength = 0;
 
 };

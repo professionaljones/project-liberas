@@ -51,6 +51,8 @@ void AShooterGameMode::InitGame(const FString& MapName, const FString& Options, 
 	{
 		bPauseable = false;
 	}
+
+
 }
 
 void AShooterGameMode::SetAllowBots(bool bInAllowBots, int32 InMaxBots)
@@ -345,13 +347,19 @@ bool AShooterGameMode::ShouldSpawnAtStartSpot(AController* Player)
 
 UClass* AShooterGameMode::GetDefaultPawnClassForController_Implementation(AController* InController)
 {
-	int32 NumEnemyToSpawn = UKismetMathLibrary::RandomIntegerInRange(0, 2);
+	ArrayLength = BotPawnClassArray.Num();
+	if (BotPawnClassArray.Num() > 2)
+	{
+		ArrayLength = BotPawnClassArray.Num() - 1;
+	}
+	else
+	{
+		ArrayLength = 0;
+	}
+	NumEnemyToSpawn = UKismetMathLibrary::RandomIntegerInRange(0, ArrayLength);
 	if (InController->IsA<AShooterAIController>())
 	{
-		if (BotPawnClassArray[NumEnemyToSpawn])
-		{
-			return BotPawnClassArray[NumEnemyToSpawn];
-		}
+		return BotPawnClassArray[NumEnemyToSpawn];
 
 	}
 	return Super::GetDefaultPawnClassForController_Implementation(InController);
