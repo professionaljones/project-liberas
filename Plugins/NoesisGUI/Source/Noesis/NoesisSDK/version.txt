@@ -1,0 +1,2 @@
+svn://svn.noesisengine.com/Noesis/NoesisSDK/branches/2.2/Native
+2.2.5 (r8380)
